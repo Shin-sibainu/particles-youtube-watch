@@ -34,7 +34,7 @@ document.body.appendChild(renderer.domElement);
  */
 //ジオメトリ
 const particlesGeometry = new THREE.BufferGeometry();
-const count = 10000;
+const count = 5000;
 
 const positionArray = new Float32Array(count * 3);
 // console.log(positionArray);
@@ -56,7 +56,7 @@ particlesGeometry.setAttribute(
 
 //マテリアル
 const pointMaterial = new THREE.PointsMaterial({
-  size: 0.05,
+  size: 0.03,
   sizeAttenuation: true,
   vertexColors: true,
   blending: THREE.AdditiveBlending,
@@ -78,6 +78,18 @@ const clock = new THREE.Clock();
 
 function animate() {
   const elapsedTime = clock.getElapsedTime();
+
+  //波を表現
+  for (let i = 0; i < count; i++) {
+    const i3 = i * 3;
+
+    const x = particlesGeometry.attributes.position.array[i3];
+    particlesGeometry.attributes.position.array[i3 + 1] = Math.sin(
+      elapsedTime + x
+    );
+  }
+
+  particlesGeometry.attributes.position.needsUpdate = true;
 
   controls.update();
 
